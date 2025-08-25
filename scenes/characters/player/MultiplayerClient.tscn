@@ -1,0 +1,81 @@
+[gd_scene load_steps=4 format=3 uid="uid://c4k2kj8vwqxc7"]
+
+[ext_resource type="PackedScene" uid="uid://c7w2ywfn0jx8x" path="res://scenes/characters/player/Player.tscn" id="1_player"]
+
+[sub_resource type="GDScript" id="GDScript_1"]
+script/source = "class_name MultiplayerClient
+extends Node
+
+var spawn_data: Dictionary = {}
+
+func _enter_tree():
+	# Process spawn data from MultiplayerSpawner.spawn()
+	if spawn_data.has(\"peer_id\"):
+		var peer_id = spawn_data.peer_id
+		name = str(peer_id)  # Set name for identification
+		set_multiplayer_authority(peer_id)
+		print(\"MultiplayerClient: Setting authority for peer \", peer_id, \" from spawn data\")
+	else:
+		# Fallback to name-based authority (legacy support)
+		var peer_id = int(name)
+		set_multiplayer_authority(peer_id)
+		print(\"MultiplayerClient: Setting authority for peer \", peer_id, \" (fallback from name)\")
+
+func _ready():
+	# Set authority for the Player node and apply spawn data
+	var peer_id = get_multiplayer_authority()
+	var player_node = get_node_or_null(\"Player\")
+	
+	if player_node:
+		player_node.set_multiplayer_authority(peer_id)
+		print(\"MultiplayerClient: Setting Player node authority for peer \", peer_id)
+		
+		# Apply spawn position if provided
+		if spawn_data.has(\"spawn_position\"):
+			player_node.global_position = spawn_data.spawn_position
+			print(\"MultiplayerClient: Set player position to: \", spawn_data.spawn_position)
+		
+		# Defer authority check
+		call_deferred(\"_verify_authority\", player_node)
+	else:
+		print(\"MultiplayerClient: ERROR - Player node not found\")
+
+func _verify_authority(player_node: Node):
+	\"\"\"Verify that authority was set correctly\"\"\"
+	if player_node and is_instance_valid(player_node):
+		print(\"MultiplayerClient: Player authority check - is_authority: \", player_node.is_multiplayer_authority())
+		if not player_node.is_multiplayer_authority():
+			print(\"MultiplayerClient: WARNING - Authority not properly set\")
+	else:
+		print(\"MultiplayerClient: ERROR - Player node invalid during verification\")
+
+func set_spawn_data(data: Dictionary):
+	\"\"\"Called by MultiplayerSpawner with spawn data\"\"\"
+	spawn_data = data
+	print(\"MultiplayerClient: Received spawn data: \", spawn_data)
+"
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_4wue6"]
+properties/0/path = NodePath("Player:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("Player:velocity")
+properties/1/spawn = false
+properties/1/replication_mode = 1
+properties/2/path = NodePath("Player:current_direction")
+properties/2/spawn = false
+properties/2/replication_mode = 2
+properties/3/path = NodePath("Player:is_jumping")
+properties/3/spawn = false
+properties/3/replication_mode = 2
+properties/4/path = NodePath("Player:is_chopping")
+properties/4/spawn = false
+properties/4/replication_mode = 2
+
+[node name="MultiplayerClient" type="Node"]
+script = SubResource("GDScript_1")
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_4wue6")

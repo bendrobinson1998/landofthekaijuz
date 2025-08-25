@@ -1,0 +1,250 @@
+[gd_scene load_steps=8 format=3 uid="uid://ctbniqmlrtp2k"]
+
+[ext_resource type="Script" uid="uid://hq0ocwm5p6xf" path="res://scripts/ui/main_menu.gd" id="1_2k4k7"]
+[ext_resource type="FontFile" uid="uid://c36bs1i5v5x7c" path="res://assets/Fonts/BoldPixels1.4.ttf" id="2_3k5k8"]
+[ext_resource type="Texture2D" uid="uid://b1snlsrmnxyiy" path="res://assets/ui/menu_background.png" id="2_iwbf0"]
+[ext_resource type="Texture2D" uid="uid://dlut7w3q4h30i" path="res://assets/ui/Modern_UI_Style_1.png" id="4_ui5k7"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2"]
+texture = ExtResource("4_ui5k7")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+region_rect = Rect2(48, 0, 48, 48)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3"]
+texture = ExtResource("4_ui5k7")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+region_rect = Rect2(96, 0, 48, 48)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1"]
+texture = ExtResource("4_ui5k7")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+region_rect = Rect2(0, 0, 48, 48)
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2k4k7")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_iwbf0")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -200.0
+offset_right = 150.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_3k5k8")
+theme_override_font_sizes/font_size = 48
+text = "Land of the Kaijuz"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+
+[node name="MenuButtons" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="NewWorldButton" type="Button" parent="VBoxContainer/MenuButtons"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_3k5k8")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/hover = SubResource("StyleBoxTexture_2")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3")
+theme_override_styles/normal = SubResource("StyleBoxTexture_1")
+text = "New World"
+
+[node name="LoadWorldButton" type="Button" parent="VBoxContainer/MenuButtons"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_3k5k8")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/hover = SubResource("StyleBoxTexture_2")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3")
+theme_override_styles/normal = SubResource("StyleBoxTexture_1")
+text = "Load World"
+
+[node name="MultiplayerButton" type="Button" parent="VBoxContainer/MenuButtons"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_3k5k8")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/hover = SubResource("StyleBoxTexture_2")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3")
+theme_override_styles/normal = SubResource("StyleBoxTexture_1")
+text = "Multiplayer"
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer/MenuButtons"]
+layout_mode = 2
+
+[node name="QuitButton" type="Button" parent="VBoxContainer/MenuButtons"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_3k5k8")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/hover = SubResource("StyleBoxTexture_2")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3")
+theme_override_styles/normal = SubResource("StyleBoxTexture_1")
+text = "Quit Game"
+
+[node name="WorldCreationDialog" type="AcceptDialog" parent="."]
+title = "Create New World"
+initial_position = 1
+size = Vector2i(400, 300)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="WorldCreationDialog"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -49.0
+
+[node name="WorldNameLabel" type="Label" parent="WorldCreationDialog/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_3k5k8")
+text = "World Name:"
+
+[node name="WorldNameInput" type="LineEdit" parent="WorldCreationDialog/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_3k5k8")
+placeholder_text = "My World"
+
+[node name="HSeparator" type="HSeparator" parent="WorldCreationDialog/VBoxContainer"]
+layout_mode = 2
+
+[node name="UsernameLabel" type="Label" parent="WorldCreationDialog/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_3k5k8")
+text = "Username:"
+
+[node name="UsernameInput" type="LineEdit" parent="WorldCreationDialog/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_3k5k8")
+placeholder_text = "Enter your username"
+
+[node name="HSeparator3" type="HSeparator" parent="WorldCreationDialog/VBoxContainer"]
+layout_mode = 2
+
+[node name="SeedLabel" type="Label" parent="WorldCreationDialog/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_3k5k8")
+text = "Seed (optional):"
+
+[node name="SeedInput" type="LineEdit" parent="WorldCreationDialog/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_3k5k8")
+placeholder_text = "Leave blank for random"
+
+[node name="HSeparator2" type="HSeparator" parent="WorldCreationDialog/VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonContainer" type="HBoxContainer" parent="WorldCreationDialog/VBoxContainer"]
+layout_mode = 2
+
+[node name="CreateButton" type="Button" parent="WorldCreationDialog/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_3k5k8")
+text = "Create World"
+
+[node name="CancelButton" type="Button" parent="WorldCreationDialog/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_3k5k8")
+text = "Cancel"
+
+[node name="WorldSelectionDialog" type="AcceptDialog" parent="."]
+title = "Load World"
+initial_position = 1
+size = Vector2i(600, 400)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="WorldSelectionDialog"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -49.0
+
+[node name="WorldList" type="ItemList" parent="WorldSelectionDialog/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("2_3k5k8")
+
+[node name="ButtonContainer" type="HBoxContainer" parent="WorldSelectionDialog/VBoxContainer"]
+layout_mode = 2
+
+[node name="LoadButton" type="Button" parent="WorldSelectionDialog/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_3k5k8")
+disabled = true
+text = "Load World"
+
+[node name="DeleteButton" type="Button" parent="WorldSelectionDialog/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_3k5k8")
+disabled = true
+text = "Delete World"
+
+[node name="CancelButton" type="Button" parent="WorldSelectionDialog/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_3k5k8")
+text = "Cancel"
+
+[connection signal="pressed" from="VBoxContainer/MenuButtons/NewWorldButton" to="." method="_on_new_world_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/MenuButtons/LoadWorldButton" to="." method="_on_load_world_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/MenuButtons/MultiplayerButton" to="." method="_on_multiplayer_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/MenuButtons/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="WorldCreationDialog/VBoxContainer/ButtonContainer/CreateButton" to="." method="_on_create_button_pressed"]
+[connection signal="pressed" from="WorldCreationDialog/VBoxContainer/ButtonContainer/CancelButton" to="." method="_on_create_cancel_button_pressed"]
+[connection signal="item_selected" from="WorldSelectionDialog/VBoxContainer/WorldList" to="." method="_on_world_list_item_selected"]
+[connection signal="pressed" from="WorldSelectionDialog/VBoxContainer/ButtonContainer/LoadButton" to="." method="_on_load_button_pressed"]
+[connection signal="pressed" from="WorldSelectionDialog/VBoxContainer/ButtonContainer/DeleteButton" to="." method="_on_delete_button_pressed"]
+[connection signal="pressed" from="WorldSelectionDialog/VBoxContainer/ButtonContainer/CancelButton" to="." method="_on_load_cancel_button_pressed"]

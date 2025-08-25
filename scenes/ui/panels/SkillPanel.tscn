@@ -1,0 +1,77 @@
+[gd_scene load_steps=2 format=3 uid="uid://skill_panel_uid"]
+
+[ext_resource type="Script" path="res://scripts/ui/panels/SkillPanel.gd" id="1_skill_panel"]
+
+[node name="SkillPanel" type="Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -394.0
+offset_top = -738.0
+offset_right = -20.0
+offset_bottom = -100.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_skill_panel")
+
+[node name="Background" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 22
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 22
+theme_override_constants/margin_bottom = 22
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+
+[node name="WoodcuttingContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="SkillNameLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/WoodcuttingContainer"]
+layout_mode = 2
+text = "Woodcutting"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+
+[node name="LevelLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/WoodcuttingContainer"]
+layout_mode = 2
+text = "Level: 1"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+
+[node name="XPLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/WoodcuttingContainer"]
+layout_mode = 2
+text = "XP: 0"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/ScrollContainer/VBoxContainer/WoodcuttingContainer"]
+layout_mode = 2
+max_value = 100.0
+custom_minimum_size = Vector2(0, 20)

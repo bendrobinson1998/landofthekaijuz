@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bjhgbiq125ikf"]
+
+[ext_resource type="Script" uid="uid://cgd2fwuvyr4au" path="res://scripts/ui/panels/ControlPanel.gd" id="1"]
+
+[node name="ControlPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1")

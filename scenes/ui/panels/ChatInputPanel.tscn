@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://ch7r5fqhxy04m"]
+
+[ext_resource type="Script" uid="uid://dcdqhuc3oh8kh" path="res://scripts/ui/panels/chat_input_panel.gd" id="1_chat_input"]
+
+[node name="ChatInputPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -64.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("1_chat_input")

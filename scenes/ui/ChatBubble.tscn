@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8ykcq3h4wfq8"]
+
+[ext_resource type="Script" uid="uid://p0qvwpndi73r" path="res://scripts/ui/chat_bubble.gd" id="1_chat_bubble"]
+
+[node name="ChatBubble" type="Control"]
+custom_minimum_size = Vector2(80, 32)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_chat_bubble")

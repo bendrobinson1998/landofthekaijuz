@@ -1,0 +1,105 @@
+[gd_scene load_steps=13 format=3 uid="uid://c37gbkah1ou0k"]
+
+[ext_resource type="Script" uid="uid://dxrscmp44gc2r" path="res://scripts/characters/chicken_npc.gd" id="1_chicken"]
+[ext_resource type="Texture2D" uid="uid://drtbu82j51c34" path="res://assets/Animals/Chicken/Chicken_01.png" id="2_chicken_tex"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fhrbd"]
+atlas = ExtResource("2_chicken_tex")
+region = Rect2(0, 192, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_llqdw"]
+atlas = ExtResource("2_chicken_tex")
+region = Rect2(32, 192, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d0tmd"]
+atlas = ExtResource("2_chicken_tex")
+region = Rect2(64, 192, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gw3s8"]
+atlas = ExtResource("2_chicken_tex")
+region = Rect2(96, 192, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sofom"]
+atlas = ExtResource("2_chicken_tex")
+region = Rect2(128, 192, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hlify"]
+atlas = ExtResource("2_chicken_tex")
+region = Rect2(160, 192, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f867v"]
+atlas = ExtResource("2_chicken_tex")
+region = Rect2(192, 192, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j2gb3"]
+atlas = ExtResource("2_chicken_tex")
+region = Rect2(224, 192, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_chicken"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fhrbd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_llqdw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d0tmd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gw3s8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sofom")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hlify")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f867v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j2gb3")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_chicken"]
+radius = 8.0
+
+[node name="ChickenNPC" type="Area2D"]
+script = ExtResource("1_chicken")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_chicken")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_chicken")
+
+[node name="InteractionPrompt" type="Label" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -50.0
+offset_right = 40.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Click to talk"
+horizontal_alignment = 1
+
+[node name="EditorHelper" type="Node2D" parent="."]
+visible = false
+
+[node name="EditorIcon" type="Sprite2D" parent="EditorHelper"]
+modulate = Color(1, 1, 1, 0.5)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_chicken_tex")

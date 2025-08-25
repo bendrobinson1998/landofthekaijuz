@@ -1,0 +1,66 @@
+[gd_scene load_steps=7 format=3 uid="uid://cbijtogxcru0h"]
+
+[ext_resource type="Script" uid="uid://buc4o4s1mpbsx" path="res://scripts/ui/core/InGameUIManager.gd" id="1_manager"]
+[ext_resource type="Script" uid="uid://bk6s4m4mqa7xu" path="res://scripts/ui/panels/DialoguePanel.gd" id="2_dialogue"]
+[ext_resource type="Script" uid="uid://cgd2fwuvyr4au" path="res://scripts/ui/panels/ControlPanel.gd" id="3_control"]
+[ext_resource type="PackedScene" uid="uid://dp3m7xqfvn8rn" path="res://scenes/ui/panels/PersistentDialogBox.tscn" id="4_persistent_dialog"]
+[ext_resource type="PackedScene" uid="uid://ch7r5fqhxy04m" path="res://scenes/ui/panels/ChatInputPanel.tscn" id="5_chat_input"]
+[ext_resource type="PackedScene" uid="uid://dcq8v2m5o6k1b" path="res://scenes/ui/components/TimeDisplay.tscn" id="6_time_display"]
+
+[node name="InGameUI" type="Control" groups=["ui_manager"]]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_manager")
+
+[node name="DialoguePanel" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -256.0
+offset_right = 816.0
+offset_bottom = -16.0
+grow_vertical = 0
+script = ExtResource("2_dialogue")
+
+[node name="ControlPanel" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -136.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+script = ExtResource("3_control")
+
+[node name="PersistentDialogBox" parent="." instance=ExtResource("4_persistent_dialog")]
+layout_mode = 1
+
+[node name="ChatInputPanel" parent="." instance=ExtResource("5_chat_input")]
+layout_mode = 1
+
+[node name="TimeDisplay" parent="." instance=ExtResource("6_time_display")]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -140.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 80.0
+grow_horizontal = 0
+
+[node name="ChatBubbleContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+mouse_filter = 2

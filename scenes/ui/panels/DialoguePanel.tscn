@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxhpn4kmn3j4o"]
+
+[ext_resource type="Script" uid="uid://bk6s4m4mqa7xu" path="res://scripts/ui/panels/DialoguePanel.gd" id="1"]
+
+[node name="DialoguePanel" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1")

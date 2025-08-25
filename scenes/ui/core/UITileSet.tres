@@ -1,0 +1,43 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://bv87lx7q731gy"]
+
+[ext_resource type="Texture2D" uid="uid://dlut7w3q4h30i" path="res://assets/ui/Modern_UI_Style_1.png" id="1_ui_texture"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ui_main"]
+texture = ExtResource("1_ui_texture")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+7:1/0 = 0
+4:2/0 = 0
+5:2/0 = 0
+6:2/0 = 0
+7:2/0 = 0
+30:1/0 = 0
+40:1/0 = 0
+29:4/0 = 0
+39:4/0 = 0
+32:2/0 = 0
+32:4/0 = 0
+42:4/0 = 0
+28:5/0 = 0
+38:5/0 = 0
+25:2/0 = 0
+
+[resource]
+sources/0 = SubResource("TileSetAtlasSource_ui_main")

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://b6314bqjfcvgo"]
+
+[ext_resource type="Texture2D" uid="uid://s171wky562rm" path="res://assets/Icons/No Outline/Resources_Icons_NO_Outline.png" id="1_ibsyx"]
+[ext_resource type="Script" uid="uid://b74fsdw6k1tlb" path="res://scripts/resources/item_resource.gd" id="1_ys6xq"]
+
+[resource]
+script = ExtResource("1_ys6xq")
+item_name = "Wood Log"
+item_icon = ExtResource("1_ibsyx")
+item_icon_region = Rect2(0, 64, 16, 16)
+max_stack_size = 1
+item_description = ""
+item_type = 0
+value = 1
+metadata/_custom_type_script = "uid://b74fsdw6k1tlb"

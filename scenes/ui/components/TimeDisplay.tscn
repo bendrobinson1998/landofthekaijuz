@@ -1,0 +1,56 @@
+[gd_scene load_steps=3 format=3 uid="uid://dcq8v2m5o6k1b"]
+
+[ext_resource type="Script" path="res://scripts/ui/components/TimeDisplay.gd" id="1_timeDisplay"]
+[ext_resource type="FontFile" uid="uid://c36bs1i5v5x7c" path="res://assets/Fonts/BoldPixels1.4.ttf" id="2_font"]
+
+[node name="TimeDisplay" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 120.0
+offset_bottom = 60.0
+script = ExtResource("1_timeDisplay")
+
+[node name="Background" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+modulate = Color(0.2, 0.2, 0.2, 0.8)
+
+[node name="TimeLabel" type="Label" parent="Background"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 5.0
+offset_right = 110.0
+offset_bottom = 25.0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "08:15"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DayLabel" type="Label" parent="Background"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 25.0
+offset_right = 110.0
+offset_bottom = 40.0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 12
+text = "Day 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PeriodLabel" type="Label" parent="Background"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 40.0
+offset_right = 110.0
+offset_bottom = 55.0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 10
+text = "Morning"
+horizontal_alignment = 1
+vertical_alignment = 1

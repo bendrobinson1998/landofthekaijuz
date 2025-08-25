@@ -1,0 +1,252 @@
+[gd_scene load_steps=6 format=3 uid="uid://bp8qicdh3vlpx"]
+
+[ext_resource type="FontFile" uid="uid://c36bs1i5v5x7c" path="res://assets/Fonts/BoldPixels1.4.ttf" id="1_font"]
+[ext_resource type="Texture2D" uid="uid://b1snlsrmnxyiy" path="res://assets/ui/menu_background.png" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://dlut7w3q4h30i" path="res://assets/ui/Modern_UI_Style_1.png" id="3_ui"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1"]
+texture = ExtResource("3_ui")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+region_rect = Rect2(0, 0, 48, 48)
+
+[sub_resource type="GDScript" id="GDScript_1"]
+script/source = "extends Control
+
+@onready var host_dialog: AcceptDialog = $HostDialog
+@onready var join_dialog: AcceptDialog = $JoinDialog
+@onready var port_input: LineEdit = $HostDialog/VBoxContainer/PortInput
+@onready var max_players_input: LineEdit = $HostDialog/VBoxContainer/MaxPlayersInput
+@onready var ip_input: LineEdit = $JoinDialog/VBoxContainer/IPInput
+@onready var join_port_input: LineEdit = $JoinDialog/VBoxContainer/PortInput
+
+func _on_host_game_button_pressed():
+	port_input.text = \"7000\"
+	max_players_input.text = \"4\"
+	host_dialog.popup_centered()
+
+func _on_join_game_button_pressed():
+	ip_input.text = \"127.0.0.1\"
+	join_port_input.text = \"7000\"
+	join_dialog.popup_centered()
+
+func _on_back_button_pressed():
+	GameManager.change_scene_to(\"res://scenes/ui/MainMenu.tscn\")
+
+func _on_host_start_button_pressed():
+	var port = int(port_input.text) if port_input.text.is_valid_int() else 7000
+	var max_players = int(max_players_input.text) if max_players_input.text.is_valid_int() else 4
+	
+	# Start hosting and load the world
+	_start_host_game(port, max_players)
+	host_dialog.hide()
+
+func _on_join_connect_button_pressed():
+	var ip = ip_input.text.strip_edges()
+	var port = int(join_port_input.text) if join_port_input.text.is_valid_int() else 7000
+	
+	if ip.is_empty():
+		ip = \"127.0.0.1\"
+	
+	# Connect to server and load the world
+	_join_game(ip, port)
+	join_dialog.hide()
+
+func _start_host_game(port: int, max_players: int):
+	# Set up multiplayer mode in GameManager
+	GameManager.player_data[\"is_host\"] = true
+	GameManager.player_data[\"port\"] = port
+	GameManager.player_data[\"max_players\"] = max_players
+	
+	# Load the multiplayer world
+	GameManager.change_scene_to(\"res://scenes/levels/world/MainWorld.tscn\")
+
+func _join_game(ip: String, port: int):
+	# Set up multiplayer mode in GameManager
+	GameManager.player_data[\"is_host\"] = false
+	GameManager.player_data[\"host_ip\"] = ip
+	GameManager.player_data[\"port\"] = port
+	
+	# Load the multiplayer world
+	GameManager.change_scene_to(\"res://scenes/levels/world/MainWorld.tscn\")
+
+func _on_host_cancel_button_pressed():
+	host_dialog.hide()
+
+func _on_join_cancel_button_pressed():
+	join_dialog.hide()
+"
+
+[node name="MultiplayerMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_1")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+stretch_mode = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_font")
+theme_override_font_sizes/font_size = 48
+text = "MULTIPLAYER"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HostGameButton" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_font")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_1")
+text = "HOST GAME"
+
+[node name="JoinGameButton" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_font")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_1")
+text = "JOIN GAME"
+
+[node name="BackButton" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_font")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_1")
+text = "BACK"
+
+[node name="HostDialog" type="AcceptDialog" parent="."]
+title = "Host Game"
+initial_position = 2
+size = Vector2i(400, 200)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HostDialog"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 36.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PortLabel" type="Label" parent="HostDialog/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_font")
+text = "Port:"
+
+[node name="PortInput" type="LineEdit" parent="HostDialog/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_font")
+placeholder_text = "7000"
+
+[node name="MaxPlayersLabel" type="Label" parent="HostDialog/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_font")
+text = "Max Players:"
+
+[node name="MaxPlayersInput" type="LineEdit" parent="HostDialog/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_font")
+placeholder_text = "4"
+
+[node name="ButtonContainer" type="HBoxContainer" parent="HostDialog/VBoxContainer"]
+layout_mode = 2
+
+[node name="HostStartButton" type="Button" parent="HostDialog/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_font")
+text = "START"
+
+[node name="HostCancelButton" type="Button" parent="HostDialog/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_font")
+text = "CANCEL"
+
+[node name="JoinDialog" type="AcceptDialog" parent="."]
+title = "Join Game"
+initial_position = 2
+size = Vector2i(400, 200)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="JoinDialog"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 36.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="IPLabel" type="Label" parent="JoinDialog/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_font")
+text = "Host IP:"
+
+[node name="IPInput" type="LineEdit" parent="JoinDialog/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_font")
+placeholder_text = "127.0.0.1"
+
+[node name="PortLabel" type="Label" parent="JoinDialog/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_font")
+text = "Port:"
+
+[node name="PortInput" type="LineEdit" parent="JoinDialog/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_font")
+placeholder_text = "7000"
+
+[node name="ButtonContainer" type="HBoxContainer" parent="JoinDialog/VBoxContainer"]
+layout_mode = 2
+
+[node name="JoinConnectButton" type="Button" parent="JoinDialog/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_font")
+text = "CONNECT"
+
+[node name="JoinCancelButton" type="Button" parent="JoinDialog/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_font")
+text = "CANCEL"
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HostGameButton" to="." method="_on_host_game_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/JoinGameButton" to="." method="_on_join_game_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="HostDialog/VBoxContainer/ButtonContainer/HostStartButton" to="." method="_on_host_start_button_pressed"]
+[connection signal="pressed" from="HostDialog/VBoxContainer/ButtonContainer/HostCancelButton" to="." method="_on_host_cancel_button_pressed"]
+[connection signal="pressed" from="JoinDialog/VBoxContainer/ButtonContainer/JoinConnectButton" to="." method="_on_join_connect_button_pressed"]
+[connection signal="pressed" from="JoinDialog/VBoxContainer/ButtonContainer/JoinCancelButton" to="." method="_on_join_cancel_button_pressed"]
