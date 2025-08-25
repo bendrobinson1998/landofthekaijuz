@@ -6,7 +6,7 @@ signal item_removed(item: ItemResource, amount: int)
 signal inventory_opened()
 signal inventory_closed()
 
-const INVENTORY_SIZE = 28
+const INVENTORY_SIZE = 25  # 5x5 grid
 
 class InventorySlot:
 	var item: ItemResource = null

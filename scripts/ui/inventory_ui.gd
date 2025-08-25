@@ -1,12 +1,7 @@
 class_name InventoryUI
 extends ScalableUIPanel
 
-@onready var background: Control = $Background
-@onready var inventory_panel: Control = $Background/InventoryPanel
-@onready var grid_container: GridContainer = $Background/InventoryPanel/MarginContainer/VBoxContainer/GridContainer
-@onready var margin_container: MarginContainer = $Background/InventoryPanel/MarginContainer
-
-var ui_tilemap: UITileMapLayer
+@onready var background_texture: TextureRect = $BackgroundTexture
 
 var slot_scene = preload("res://scenes/ui/InventorySlot.tscn")
 var inventory_slots: Array[InventorySlotUI] = []
@@ -20,60 +15,44 @@ func _ready():
 	
 	# Start hidden, will be shown if needed
 	visible = false
-	_update_responsive_margins()
-	_setup_inventory_grid()
+	_setup_existing_slots()
 	_connect_to_inventory_manager()
-	
-	# Setup UI tilemap after layout is ready
-	call_deferred("_setup_ui_tilemap")
 
-func _setup_ui_tilemap():
-	# Create the UI tilemap for background styling
-	ui_tilemap = UITileMapLayer.new()
-	ui_tilemap.name = "UITileMap"
-	ui_tilemap.panel_style = UITileMapLayer.PanelStyle.DARK_WOOD
-	ui_tilemap.position = Vector2.ZERO
-	ui_tilemap.z_index = -1  # Put tilemap behind other content
-	background.add_child(ui_tilemap)
-	
-	# Calculate tilemap size dynamically based on actual panel dimensions
-	var tilemap_size = _calculate_background_size()
-	ui_tilemap.draw_panel(Vector2i.ZERO, tilemap_size, UITileMapLayer.PanelStyle.DARK_WOOD)
 
-func _calculate_background_size() -> Vector2i:
-	# Calculate the required tilemap size based on actual panel dimensions
-	# This ensures the background texture fits the panel fluidly
-	
-	const TILE_SIZE = 16  # UI tileset uses 16x16 tiles
-	
-	# Get actual panel size (accounting for current scale)
-	var panel_size = background.size
-	if panel_size.x <= 0 or panel_size.y <= 0:
-		# Fallback to design dimensions if size not yet calculated
-		panel_size = Vector2(374, 638)  # From scene offset calculations
-	
-	# Calculate tiles needed to cover the panel area
-	var tiles_width = max(3, ceili(panel_size.x / TILE_SIZE))  # Minimum 3 for 9-patch
-	var tiles_height = max(3, ceili(panel_size.y / TILE_SIZE))  # Minimum 3 for 9-patch
-	
-	print("InventoryUI: Panel size: ", panel_size, " -> Tilemap size: ", Vector2i(tiles_width, tiles_height))
-	return Vector2i(tiles_width, tiles_height)
-
-func _setup_inventory_grid():
-	# Clear existing children
-	for child in grid_container.get_children():
-		child.queue_free()
-	
+func _setup_existing_slots():
+	# Get manually placed slot children from the InventoryUI root
+	var all_children = get_children()
 	inventory_slots.clear()
 	
-	# Create 28 slots (7x4 grid)
-	for i in range(InventoryManager.INVENTORY_SIZE):
-		var slot = slot_scene.instantiate() as InventorySlotUI
+	# Find and configure InventorySlot nodes
+	for child in all_children:
+		var slot = child as InventorySlotUI
+		if slot:
+			inventory_slots.append(slot)
+	
+	# Sort slots by position (top-to-bottom, left-to-right) to ensure proper visual order
+	inventory_slots.sort_custom(func(a, b):
+		# First sort by row (top to bottom)
+		if abs(a.position.y - b.position.y) > 5:  # 5 pixel tolerance for same row
+			return a.position.y < b.position.y
+		# Then by column (left to right) within the same row
+		return a.position.x < b.position.x
+	)
+	
+	# Configure slots with proper indices and connections
+	for i in range(inventory_slots.size()):
+		var slot = inventory_slots[i]
 		slot.slot_index = i
+		# Disconnect any existing connections to avoid duplicates
+		if slot.slot_clicked.is_connected(_on_slot_clicked):
+			slot.slot_clicked.disconnect(_on_slot_clicked)
+		if slot.slot_hovered.is_connected(_on_slot_hovered):
+			slot.slot_hovered.disconnect(_on_slot_hovered)
+		# Connect signals
 		slot.slot_clicked.connect(_on_slot_clicked)
 		slot.slot_hovered.connect(_on_slot_hovered)
-		grid_container.add_child(slot)
-		inventory_slots.append(slot)
+	
+	print("InventoryUI: Found and configured ", inventory_slots.size(), " manually placed slots")
 
 func _connect_to_inventory_manager():
 	if InventoryManager:
@@ -86,11 +65,20 @@ func _on_inventory_changed():
 	if not InventoryManager:
 		return
 	
-	# Update all slots
-	for i in range(inventory_slots.size()):
+	# Update all slots (handle case where slot count might differ from inventory size)
+	var slot_count = inventory_slots.size()
+	var inventory_size = InventoryManager.INVENTORY_SIZE
+	var max_slots = min(slot_count, inventory_size)
+	
+	for i in range(max_slots):
 		var slot_data = InventoryManager.get_slot(i)
-		if slot_data:
+		if slot_data and i < inventory_slots.size():
 			inventory_slots[i].update_slot(slot_data)
+	
+	# Clear any extra slots if we have more slots than inventory size
+	for i in range(max_slots, slot_count):
+		if i < inventory_slots.size():
+			inventory_slots[i].update_slot(null)
 
 func _on_inventory_opened():
 	print("InventoryUI: _on_inventory_opened called")
@@ -113,29 +101,8 @@ func _on_slot_hovered(index: int):
 		pass
 
 
-func _update_responsive_margins():
-	"""Update margins based on panel size for better mobile compatibility"""
-	if not margin_container:
-		return
-	
-	# Keep consistent 22px margins for equal spacing
-	var base_margin = 22
-	margin_container.add_theme_constant_override("margin_left", base_margin)
-	margin_container.add_theme_constant_override("margin_top", base_margin) 
-	margin_container.add_theme_constant_override("margin_right", base_margin)
-	margin_container.add_theme_constant_override("margin_bottom", base_margin)
 
-func _on_scale_applied(ui_scale: float):
-	"""Update responsive elements when scale changes"""
-	_update_responsive_margins()
-	# Redraw background with new size after scale change
-	if ui_tilemap:
-		var tilemap_size = _calculate_background_size()
-		ui_tilemap.draw_panel(Vector2i.ZERO, tilemap_size, UITileMapLayer.PanelStyle.DARK_WOOD)
 
-func _get_anchor_based_pivot() -> Vector2:
-	"""Override to use bottom-center pivot for inventory panel to prevent overlap when scaling"""
-	return Vector2(size.x / 2.0, size.y)
 
 func _input(event: InputEvent):
 	if event.is_action_pressed("toggle_inventory"):
